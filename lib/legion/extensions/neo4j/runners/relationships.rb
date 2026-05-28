@@ -21,8 +21,8 @@ module Legion
 
           def get_relationship(id:, database: 'neo4j', url: nil, username: nil, password: nil, **)
             execute_cypher('MATCH (a)-[r]->(b) WHERE elementId(r) = $id RETURN a, r, b',
-                          parameters: { id: id }, database: database,
-                          url: url, username: username, password: password)
+                           parameters: { id: id }, database: database,
+                           url: url, username: username, password: password)
           end
 
           def create_relationship(from_id:, to_id:, type:, properties: {}, database: 'neo4j',
@@ -32,8 +32,8 @@ module Legion
             cypher = 'MATCH (a), (b) WHERE elementId(a) = $from_id AND elementId(b) = $to_id ' \
                      "CREATE (a)-[r:#{type} $props]->(b) RETURN a, r, b"
             execute_cypher(cypher,
-                          parameters: { from_id: from_id, to_id: to_id, props: properties },
-                          database: database, url: url, username: username, password: password)
+                           parameters: { from_id: from_id, to_id: to_id, props: properties },
+                           database: database, url: url, username: username, password: password)
           end
 
           def update_relationship(id:, properties: {}, database: 'neo4j', url: nil, username: nil, password: nil,
@@ -41,8 +41,8 @@ module Legion
             raise ReadOnlyError, 'Write operations disabled (read_only mode)' if read_only
 
             execute_cypher('MATCH ()-[r]->() WHERE elementId(r) = $id SET r += $props RETURN r',
-                          parameters: { id: id, props: properties }, database: database,
-                          url: url, username: username, password: password)
+                           parameters: { id: id, props: properties }, database: database,
+                           url: url, username: username, password: password)
           end
 
           def delete_relationship(id:, database: 'neo4j', url: nil, username: nil, password: nil,
@@ -50,8 +50,8 @@ module Legion
             raise ReadOnlyError, 'Write operations disabled (read_only mode)' if read_only
 
             execute_cypher('MATCH ()-[r]->() WHERE elementId(r) = $id DELETE r',
-                          parameters: { id: id }, database: database,
-                          url: url, username: username, password: password)
+                           parameters: { id: id }, database: database,
+                           url: url, username: username, password: password)
           end
 
           def merge_relationship(from_id:, to_id:, type:, on_create: {}, on_match: {}, database: 'neo4j',
@@ -64,14 +64,14 @@ module Legion
             cypher += ' ON MATCH SET r += $on_match' unless on_match.empty?
             cypher += ' RETURN a, r, b'
             execute_cypher(cypher,
-                          parameters: { from_id: from_id, to_id: to_id, on_create: on_create, on_match: on_match },
-                          database: database, url: url, username: username, password: password)
+                           parameters: { from_id: from_id, to_id: to_id, on_create: on_create, on_match: on_match },
+                           database: database, url: url, username: username, password: password)
           end
 
           def list_relationship_types(database: 'neo4j', url: nil, username: nil, password: nil, **)
             execute_cypher('CALL db.relationshipTypes() YIELD relationshipType RETURN relationshipType',
-                          parameters: {}, database: database,
-                          url: url, username: username, password: password)
+                           parameters: {}, database: database,
+                           url: url, username: username, password: password)
           end
 
           def neighbors(id:, direction: :both, type: nil, limit: 25, database: 'neo4j',

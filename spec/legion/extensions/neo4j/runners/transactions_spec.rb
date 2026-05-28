@@ -52,7 +52,7 @@ RSpec.describe Legion::Extensions::Neo4j::Runners::Transactions do
     end
 
     context 'when errors returned' do
-      let(:success_body) { { 'results' => [], 'errors' => [{ 'message' => 'oops' }] } }
+      let(:success_body) { { results: [], errors: [{ 'message' => 'oops' }] } }
 
       it 'raises CypherError' do
         expect { runner.execute_in_transaction(transaction_url: '/db/neo4j/tx/1', statements: ['BAD']) }

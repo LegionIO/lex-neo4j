@@ -1,2 +1,8 @@
 inherit_gem:
   rubocop-legion: config/lex.yml
+
+Metrics/ParameterLists:
+  Max: 11
+
+Legion/Extension/RunnerReturnHash:
+  Enabled: false

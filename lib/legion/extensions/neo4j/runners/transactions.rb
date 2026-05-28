@@ -29,9 +29,7 @@ module Legion
             resp = connection(url: url, username: username, password: password)
                    .post(transaction_url, payload)
             body = resp.body
-            if body.is_a?(Hash) && body['errors'] && !body['errors'].empty?
-              raise CypherError, body['errors'].map { |e| e['message'] }.join('; ')
-            end
+            raise CypherError, body[:errors].map { |e| e['message'] }.join('; ') if body.is_a?(Hash) && body[:errors] && !body[:errors].empty?
 
             body
           end
@@ -40,9 +38,7 @@ module Legion
             resp = connection(url: url, username: username, password: password)
                    .post("#{transaction_url}/commit", { statements: [] })
             body = resp.body
-            if body.is_a?(Hash) && body['errors'] && !body['errors'].empty?
-              raise CypherError, body['errors'].map { |e| e['message'] }.join('; ')
-            end
+            raise CypherError, body[:errors].map { |e| e['message'] }.join('; ') if body.is_a?(Hash) && body[:errors] && !body[:errors].empty?
 
             body
           end

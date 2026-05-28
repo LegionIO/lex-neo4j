@@ -36,9 +36,7 @@ module Legion
             resp = connection(url: url, username: username, password: password)
                    .post("/db/#{database}/tx/commit", payload)
             body = resp.body
-            if body.is_a?(Hash) && body['errors'] && !body['errors'].empty?
-              raise CypherError, body['errors'].map { |e| e['message'] }.join('; ')
-            end
+            raise CypherError, body[:errors].map { |e| e['message'] }.join('; ') if body.is_a?(Hash) && body[:errors] && !body[:errors].empty?
 
             body
           end

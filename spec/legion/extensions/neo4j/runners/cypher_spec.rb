@@ -69,14 +69,14 @@ RSpec.describe Legion::Extensions::Neo4j::Runners::Cypher do
       runner.multi_statement(['RETURN 1', { statement: 'RETURN 2', parameters: {} }])
       expect(fake_conn).to have_received(:post).with(anything,
                                                      hash_including(statements: [
-                                                                     { statement: 'RETURN 1', parameters: {} },
-                                                                     { statement: 'RETURN 2', parameters: {} }
-                                                                   ]))
+                                                                      { statement: 'RETURN 1', parameters: {} },
+                                                                      { statement: 'RETURN 2', parameters: {} }
+                                                                    ]))
     end
   end
 
   context 'when cypher errors are returned' do
-    let(:success_body) { { 'results' => [], 'errors' => [{ 'message' => 'SyntaxError' }] } }
+    let(:success_body) { { results: [], errors: [{ 'message' => 'SyntaxError' }] } }
 
     it 'raises CypherError' do
       expect { runner.query('INVALID CYPHER') }
